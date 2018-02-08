@@ -49,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button cameraBtn = (Button)findViewById(R.id.camera);
+        cameraBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraActivity.launch(MainActivity.this);
+            }
+        });
+
     }
 
     //OpenCV库静态加载并初始化

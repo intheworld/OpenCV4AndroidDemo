@@ -30,6 +30,7 @@
             android:text="process"
             android:id="@+id/process"/>
 
+
         <TextView
             android:paddingLeft="10dp"
             android:layout_width="0dp"
@@ -38,6 +39,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
             android:id="@+id/text_result"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="camera"
+            android:id="@+id/camera"/>
     </LinearLayout>
 
 </LinearLayout>
