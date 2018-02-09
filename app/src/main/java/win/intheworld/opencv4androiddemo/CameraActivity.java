@@ -292,16 +292,15 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
     @Override
     public void onResume() {
         super.onResume();
-        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        staticLoadCVLibraries();
-        mIsMenuLocked = false;
-    }
-
-    private void staticLoadCVLibraries(){
-        boolean load = OpenCVLoader.initDebug();
-        if(load) {
-            Log.i("CV", "Open CV Libraries loaded...");
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+        //staticLoadCVLibraries();
+        mIsMenuLocked = false;
     }
 
     @Override
