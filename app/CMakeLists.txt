@@ -100,6 +100,7 @@ add_library(libopencv_videostab STATIC IMPORTED)
 set_target_properties(libopencv_videostab PROPERTIES IMPORTED_LOCATION
     ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_videostab.a)
 
+
 # Specifies a path to native header files.
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/main/cpp/include)

@@ -162,6 +162,7 @@ Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDe
 
 JNIEXPORT void JNICALL
 Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStart
+
         (JNIEnv
          *jenv, jclass,
          jlong thiz
@@ -201,6 +202,7 @@ Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeSt
 
 JNIEXPORT void JNICALL
 Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStop
+
         (JNIEnv
          *jenv, jclass,
          jlong thiz
@@ -280,8 +282,7 @@ Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeSe
 }
 
 
-JNIEXPORT void JNICALL
-Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect
+JNIEXPORT void JNICALL Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect
         (JNIEnv
          *jenv, jclass,
          jlong thiz, jlong

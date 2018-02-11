@@ -4,6 +4,7 @@
 
 #ifndef _Included_win_intheworld_opencv4androiddemo_fd_DetectionBasedTracker
 #define _Included_win_intheworld_opencv4androiddemo_fd_DetectionBasedTracker
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,6 +54,7 @@ JNIEXPORT void JNICALL Java_win_intheworld_opencv4androiddemo_facedetect_Detecti
  * Signature: (JJJ)V
  */
 JNIEXPORT void JNICALL Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect
+
   (JNIEnv *, jclass, jlong, jlong, jlong);
 
 #ifdef __cplusplus

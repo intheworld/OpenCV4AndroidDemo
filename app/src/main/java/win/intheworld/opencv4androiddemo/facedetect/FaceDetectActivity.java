@@ -61,7 +61,6 @@ public class FaceDetectActivity extends Activity implements CameraBridgeViewBase
         context.startActivity(intent);
     }
 
-
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
