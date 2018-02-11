@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -30,9 +33,13 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import win.intheworld.opencv4androiddemo.adapters.CameraProjectionAdapter;
 import win.intheworld.opencv4androiddemo.filter.Filter;
-import win.intheworld.opencv4androiddemo.filter.ImageDetectionFilter;
+import win.intheworld.opencv4androiddemo.filter.ar.ARFilter;
+import win.intheworld.opencv4androiddemo.filter.ar.ImageDetectionFilter;
 import win.intheworld.opencv4androiddemo.filter.NoneFilter;
+import win.intheworld.opencv4androiddemo.filter.ar.NoneARFilter;
 import win.intheworld.opencv4androiddemo.filter.convolution.StrokeEdgesFilter;
 import win.intheworld.opencv4androiddemo.filter.curve.CrossProcessCurveFilter;
 import win.intheworld.opencv4androiddemo.filter.curve.PortraCurveFilter;
@@ -74,7 +81,7 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
     private static final int MENU_GROUP_ID_SIZE = 2;
 
     // The filters.
-    private Filter[] mImageDetectionFilters;
+    private ARFilter[] mImageDetectionFilters;
     private Filter[] mCurveFilters;
     private Filter[] mMixerFilters;
     private Filter[] mConvolutionFilters;
@@ -104,6 +111,12 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
     // The camera view.
     private CameraBridgeViewBase mCameraView;
 
+    // An adapter between the video camera and projection matrix.
+    private CameraProjectionAdapter mCameraProjectionAdapter;
+
+    // The renderer for 3D augmentations.
+    private ARCubeRenderer mARRenderer;
+
     // Whether the next camera frame should be saved as a photo.
     private boolean mIsPhotoPending;
 
@@ -126,11 +139,13 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
                             //mCameraView.enableFpsMeter();
                             mBgr = new Mat();
 
-                            final Filter starryNight;
+                            final ARFilter starryNight;
                             try {
+                                // Define The Starry Night to be 1.0 units tall.
                                 starryNight = new ImageDetectionFilter(
                                         CameraActivity.this,
-                                        R.drawable.starry_night);
+                                        R.drawable.starry_night,
+                                        mCameraProjectionAdapter, 1.0);
                             } catch (IOException e) {
                                 Log.e(TAG, "Failed to load drawable: " +
                                         "starry_night");
@@ -138,11 +153,14 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
                                 break;
                             }
 
-                            final Filter akbarHunting;
+                            final ARFilter akbarHunting;
                             try {
+                                // Define Akbar Hunting with Cheetahs to be 1.0
+                                // units wide.
                                 akbarHunting = new ImageDetectionFilter(
                                         CameraActivity.this,
-                                        R.drawable.akbar_hunting_with_cheetahs);
+                                        R.drawable.akbar_hunting_with_cheetahs,
+                                        mCameraProjectionAdapter, 1.0);
                             } catch (IOException e) {
                                 Log.e(TAG, "Failed to load drawable: " +
                                         "akbar_hunting_with_cheetahs");
@@ -150,8 +168,8 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
                                 break;
                             }
 
-                            mImageDetectionFilters = new Filter[] {
-                                    new NoneFilter(),
+                            mImageDetectionFilters = new ARFilter[] {
+                                    new NoneARFilter(),
                                     starryNight,
                                     akbarHunting
                             };
@@ -219,8 +237,42 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
             mConvolutionFilterIndex = 0;
         }
 
+        final FrameLayout layout = new FrameLayout(this);
+        layout.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        setContentView(layout);
+
+        mCameraView = new JavaCameraView(this, mCameraIndex);
+        mCameraView.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        layout.addView(mCameraView);
+
+        GLSurfaceView glSurfaceView = new GLSurfaceView(this);
+        glSurfaceView.getHolder().setFormat(
+                PixelFormat.TRANSPARENT);
+        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 0, 0);
+        glSurfaceView.setZOrderOnTop(true);
+        glSurfaceView.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        layout.addView(glSurfaceView);
+
+        mCameraProjectionAdapter = new CameraProjectionAdapter();
+
+        mARRenderer = new ARCubeRenderer();
+        mARRenderer.cameraProjectionAdapter =
+                mCameraProjectionAdapter;
+        // Earlier, we defined the printed image's size as 1.0
+        // unit.
+        // Define the cube to be half this size.
+        mARRenderer.scale = 0.5f;
+        glSurfaceView.setRenderer(mARRenderer);
+
         final Camera camera;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        if (Build.VERSION.SDK_INT >=
+                Build.VERSION_CODES.GINGERBREAD) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(mCameraIndex, cameraInfo);
             mIsCameraFrontFacing =
@@ -239,13 +291,17 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
         mSupportedImageSizes =
                 parameters.getSupportedPreviewSizes();
         final Camera.Size size = mSupportedImageSizes.get(mImageSizeIndex);
+        mCameraProjectionAdapter.setCameraParameters(
+                parameters, size);
+        // Earlier, we defined the printed image's size as 1.0
+        // unit.
+        // Leave the near and far clip distances at their default
+        // values, which are 0.1 (one-tenth the image size) and
+        // 10.0 (ten times the image size).
 
-        mCameraView = new JavaCameraView(this, mCameraIndex);
         mCameraView.setMaxFrameSize(size.width, size.height);
         mCameraView.setCvCameraViewListener(this);
-        setContentView(mCameraView);
     }
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the current camera index.
@@ -353,6 +409,8 @@ public class CameraActivity  extends AppCompatActivity implements CameraBridgeVi
                         mImageDetectionFilters.length) {
                     mImageDetectionFilterIndex = 0;
                 }
+                mARRenderer.filter = mImageDetectionFilters[
+                        mImageDetectionFilterIndex];
                 return true;
             case R.id.menu_next_curve_filter:
                 mCurveFilterIndex++;
