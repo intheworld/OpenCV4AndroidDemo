@@ -11,6 +11,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+                cppFlags "-std=c++11", "-frtti", "-fexceptions"
+            }
+        }
     }
     buildTypes {
         release {

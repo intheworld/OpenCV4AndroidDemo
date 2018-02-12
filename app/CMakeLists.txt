@@ -101,6 +101,56 @@ set_target_properties(libopencv_videostab PROPERTIES IMPORTED_LOCATION
     ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_videostab.a)
 
 
+add_library(libopencv_java3 SHARED IMPORTED)
+set_target_properties(libopencv_java3 PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_java3.so)
+
+
+    ######################################
+    #         3rd party library          #
+    ######################################
+
+add_library(libcpufeatures STATIC IMPORTED)
+set_target_properties(libcpufeatures PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/libcpufeatures.a)
+
+add_library(libIlmImf STATIC IMPORTED)
+set_target_properties(libIlmImf PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/libIlmImf.a)
+
+add_library(liblibjasper STATIC IMPORTED)
+set_target_properties(liblibjasper PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibjasper.a)
+
+add_library(liblibjpeg STATIC IMPORTED)
+set_target_properties(liblibjpeg PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibjpeg.a)
+
+add_library(liblibpng STATIC IMPORTED)
+set_target_properties(liblibpng PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibpng.a)
+
+add_library(liblibprotobuf STATIC IMPORTED)
+set_target_properties(liblibprotobuf PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibprotobuf.a)
+
+add_library(liblibtiff STATIC IMPORTED)
+set_target_properties(liblibtiff PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibtiff.a)
+
+add_library(liblibwebp STATIC IMPORTED)
+set_target_properties(liblibwebp PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/liblibwebp.a)
+
+add_library(libtbb STATIC IMPORTED)
+set_target_properties(libtbb PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/libtbb.a)
+
+add_library(libtegra_hal STATIC IMPORTED)
+set_target_properties(libtegra_hal PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/3rdparty/libs/${ANDROID_ABI}/libtegra_hal.a)
+
+
 # Specifies a path to native header files.
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/main/cpp/include)
@@ -113,22 +163,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DANDROID_OS")
 
 target_link_libraries( detection_based_tracker
                        log
-                       z
-                       libopencv_calib3d
-                       libopencv_core
-                       libopencv_dnn
-                       libopencv_features2d
-                       libopencv_flann
-                       libopencv_highgui
-                       libopencv_imgcodecs
-                       libopencv_imgproc
-                       libopencv_ml
-                       libopencv_objdetect
-                       libopencv_photo
-                       libopencv_shape
-                       libopencv_stitching
-                       libopencv_superres
-                       libopencv_video
-                       libopencv_videoio
-                       libopencv_videostab
-                        )
+                       android
+                       libopencv_java3
+                     )

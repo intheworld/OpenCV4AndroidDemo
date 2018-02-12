@@ -1,9 +1,9 @@
 package win.intheworld.opencv4androiddemo.facedetect;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +30,7 @@ import win.intheworld.opencv4androiddemo.R;
  * Email: swliu@cam2cloud.com
  */
 
-public class FaceDetectActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
+public class FaceDetectActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = FaceDetectActivity.class.getSimpleName();
     private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
     public static final int JAVA_DETECTOR = 0;
@@ -202,6 +202,7 @@ public class FaceDetectActivity extends Activity implements CameraBridgeViewBase
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "called onCreateOptionsMenu");
+        super.onCreateOptionsMenu(menu);
         mItemFace50 = menu.add("Face size 50%");
         mItemFace40 = menu.add("Face size 40%");
         mItemFace30 = menu.add("Face size 30%");
