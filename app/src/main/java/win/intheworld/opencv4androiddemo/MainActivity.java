@@ -17,6 +17,8 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import java.io.InputStream;
 
+import win.intheworld.opencv4androiddemo.facedetect.FaceDetectActivity;
+
 public class MainActivity extends AppCompatActivity {
     private double max_size = 1024;
     private int PICK_IMAGE_REQUEST = 1;
@@ -54,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CameraActivity.launch(MainActivity.this);
+            }
+        });
+
+        Button trackBtn = (Button)findViewById(R.id.track);
+        trackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FaceDetectActivity.launch(MainActivity.this);
             }
         });
 

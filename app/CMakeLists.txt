@@ -21,11 +21,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/jni/DetectionBasedTracker_jni.cpp
 )
 
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
+set(distribution_DIR ${CMAKE_SOURCE_DIR}/../../../../distribution)
 
 find_library( # Sets the name of the path variable.
               log-lib
@@ -34,6 +30,75 @@ find_library( # Sets the name of the path variable.
               # you want CMake to locate.
               log )
 
+add_library(libopencv_calib3d STATIC IMPORTED)
+set_target_properties(libopencv_calib3d PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_calib3d.a)
+
+add_library(libopencv_core STATIC IMPORTED)
+set_target_properties(libopencv_core PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_core.a)
+
+
+add_library(libopencv_dnn STATIC IMPORTED)
+set_target_properties(libopencv_dnn PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_dnn.a)
+
+
+add_library(libopencv_features2d STATIC IMPORTED)
+set_target_properties(libopencv_features2d PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_features2d.a)
+
+add_library(libopencv_flann STATIC IMPORTED)
+set_target_properties(libopencv_flann PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_flann.a)
+
+add_library(libopencv_highgui STATIC IMPORTED)
+set_target_properties(libopencv_highgui PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_highgui.a)
+
+add_library(libopencv_imgcodecs STATIC IMPORTED)
+set_target_properties(libopencv_imgcodecs PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_imgcodecs.a)
+
+add_library(libopencv_imgproc STATIC IMPORTED)
+set_target_properties(libopencv_imgproc PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_imgproc.a)
+
+add_library(libopencv_ml STATIC IMPORTED)
+set_target_properties(libopencv_ml PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_ml.a)
+
+add_library(libopencv_objdetect STATIC IMPORTED)
+set_target_properties(libopencv_objdetect PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_objdetect.a)
+
+add_library(libopencv_photo STATIC IMPORTED)
+set_target_properties(libopencv_photo PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_photo.a)
+
+add_library(libopencv_shape STATIC IMPORTED)
+set_target_properties(libopencv_shape PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_shape.a)
+
+add_library(libopencv_stitching STATIC IMPORTED)
+set_target_properties(libopencv_stitching PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_stitching.a)
+
+add_library(libopencv_superres STATIC IMPORTED)
+set_target_properties(libopencv_superres PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_superres.a)
+
+add_library(libopencv_video STATIC IMPORTED)
+set_target_properties(libopencv_video PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_video.a)
+
+add_library(libopencv_videoio STATIC IMPORTED)
+set_target_properties(libopencv_videoio PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_videoio.a)
+
+add_library(libopencv_videostab STATIC IMPORTED)
+set_target_properties(libopencv_videostab PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}/libopencv_videostab.a)
 
 # Specifies a path to native header files.
 include_directories(
@@ -47,4 +112,22 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DANDROID_OS")
 
 target_link_libraries( detection_based_tracker
                        log
+                       z
+                       libopencv_calib3d
+                       libopencv_core
+                       libopencv_dnn
+                       libopencv_features2d
+                       libopencv_flann
+                       libopencv_highgui
+                       libopencv_imgcodecs
+                       libopencv_imgproc
+                       libopencv_ml
+                       libopencv_objdetect
+                       libopencv_photo
+                       libopencv_shape
+                       libopencv_stitching
+                       libopencv_superres
+                       libopencv_video
+                       libopencv_videoio
+                       libopencv_videostab
                         )

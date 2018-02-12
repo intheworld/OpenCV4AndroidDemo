@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <android/log.h>
-#include <DetectionBasedTracker_jni.h>
+#include "DetectionBasedTracker_jni.h"
 #include <opencv2/core.hpp>
 #include <opencv2/objdetect.hpp>
 
@@ -77,14 +77,14 @@ struct DetectorAgregator {
 
 JNIEXPORT jlong
 
-JNICALL Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObject
+JNICALL Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeCreateObject
         (JNIEnv *jenv, jclass, jstring jFileName, jint faceSize) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObject enter");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeCreateObject enter");
     const char *jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
     string stdFileName(jnamestr);
     jlong result = 0;
 
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObject");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeCreateObject");
 
     try {
         cv::Ptr<CascadeDetectorAdapter> mainDetector = makePtr<CascadeDetectorAdapter>(
@@ -113,17 +113,17 @@ JNICALL Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObj
         return 0;
     }
 
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObject exit");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeCreateObject exit");
     return result;
 }
 
 JNIEXPORT void JNICALL
-Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDestroyObject
+Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDestroyObject
         (JNIEnv
          *jenv, jclass,
          jlong thiz
         ) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDestroyObject");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDestroyObject");
 
     try {
         if (thiz != 0) {
@@ -157,16 +157,16 @@ Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDestroyObject
                 ThrowNew(je,
                          "Unknown exception in JNI code of DetectionBasedTracker.nativeDestroyObject()");
     }
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDestroyObject exit");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDestroyObject exit");
 }
 
 JNIEXPORT void JNICALL
-Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStart
+Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStart
         (JNIEnv
          *jenv, jclass,
          jlong thiz
         ) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStart");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStart");
 
     try {
         ((DetectorAgregator *) thiz)->tracker->
@@ -196,16 +196,16 @@ Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStart
                 ThrowNew(je,
                          "Unknown exception in JNI code of DetectionBasedTracker.nativeStart()");
     }
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStart exit");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStart exit");
 }
 
 JNIEXPORT void JNICALL
-Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStop
+Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStop
         (JNIEnv
          *jenv, jclass,
          jlong thiz
         ) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStop");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStop");
 
     try {
         ((DetectorAgregator *) thiz)->tracker->
@@ -235,16 +235,16 @@ Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStop
                 ThrowNew(je,
                          "Unknown exception in JNI code of DetectionBasedTracker.nativeStop()");
     }
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeStop exit");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeStop exit");
 }
 
 JNIEXPORT void JNICALL
-Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeSetFaceSize
+Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeSetFaceSize
         (JNIEnv
          *jenv, jclass,
          jlong thiz, jint
          faceSize) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeSetFaceSize -- BEGIN");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeSetFaceSize -- BEGIN");
 
     try {
         if (faceSize > 0) {
@@ -276,19 +276,19 @@ Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeSetFaceSize
                 ThrowNew(je,
                          "Unknown exception in JNI code of DetectionBasedTracker.nativeSetFaceSize()");
     }
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeSetFaceSize -- END");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeSetFaceSize -- END");
 }
 
 
 JNIEXPORT void JNICALL
-Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDetect
+Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect
         (JNIEnv
          *jenv, jclass,
          jlong thiz, jlong
          imageGray,
          jlong faces
         ) {
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDetect");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect");
 
     try {
         vector<Rect> RectFaces;
@@ -323,5 +323,5 @@ Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDetect
                 ThrowNew(je,
                          "Unknown exception in JNI code DetectionBasedTracker.nativeDetect()");
     }
-    LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeDetect END");
+    LOGD("Java_win_intheworld_opencv4androiddemo_facedetect_DetectionBasedTracker_nativeDetect END");
 }

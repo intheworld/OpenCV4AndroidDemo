@@ -2,12 +2,12 @@ package win.intheworld.opencv4androiddemo.facedetect;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
@@ -19,12 +19,10 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import win.intheworld.opencv4androiddemo.R;
 
 /**
@@ -57,6 +55,12 @@ public class FaceDetectActivity extends Activity implements CameraBridgeViewBase
     private int mAbsoluteFaceSize = 0;
 
     private CameraBridgeViewBase mOpenCvCameraView;
+
+    public static void launch(Context context) {
+        final Intent intent = new Intent(context, FaceDetectActivity.class);
+        context.startActivity(intent);
+    }
+
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
